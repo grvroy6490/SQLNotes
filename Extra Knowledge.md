@@ -140,3 +140,347 @@ The comparison between integers (like _long_) is generally more efficient than t
    * Using integers (like _long_ values) as primary keys is generally faster and more efficient than using strings (like _email_ addresses). This efficiency becomes especially important in large databases where millions of comparisons might be necessary for operations like searching, sorting, and joining tables.
 
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## List of CONSTRAINTS in CRUD
+
+Constraints in SQL ensure data integrity and enforce rules during CRUD (Create, Read, Update, Delete) operations. Below is a list of the primary SQL constraints and how they impact CRUD operations:
+
+### 1. **PRIMARY KEY Constraint**
+   - **Create**: Ensures that the value for the primary key column is unique and not `NULL` when a new record is inserted.
+   - **Read**: Typically used to uniquely identify a single record during a read operation.
+   - **Update**: Cannot modify a primary key value to something that already exists or set it to `NULL`.
+   - **Delete**: When deleting a record, it ensures that no other table references this record as a foreign key, depending on the referential integrity settings.
+
+### 2. **UNIQUE Constraint**
+   - **Create**: Ensures that the value for the unique column is not duplicated when inserting a new record.
+   - **Read**: Helps to identify unique records based on one or more columns.
+   - **Update**: Prevents updating a column value to a value that already exists in another record.
+   - **Delete**: No direct impact, but indirectly ensures that once a record is deleted, the unique value can be reused.
+
+### 3. **FOREIGN KEY Constraint**
+   - **Create**: Ensures that the value in the foreign key column exists as a primary key in the referenced table.
+   - **Read**: Used to join tables and ensure referential integrity.
+   - **Update**: Prevents updating the foreign key value to something that doesn’t exist in the referenced table.
+   - **Delete**: Can prevent deletion of a record if it is referenced by a foreign key in another table, unless `ON DELETE CASCADE` is used.
+
+### 4. **NOT NULL Constraint**
+   - **Create**: Ensures that the column value cannot be `NULL` when inserting a new record.
+   - **Read**: Ensures that the retrieved data always contains values for the specified columns.
+   - **Update**: Prevents updating a column to a `NULL` value.
+   - **Delete**: No direct impact.
+
+### 5. **CHECK Constraint**
+   - **Create**: Ensures that the column value meets specific conditions when inserting a new record (e.g., a number must be within a certain range).
+   - **Read**: Ensures that only valid data is read, assuming valid data was inserted according to the constraint.
+   - **Update**: Prevents updating a column to a value that does not meet the specified condition.
+   - **Delete**: No direct impact.
+
+### 6. **DEFAULT Constraint**
+   - **Create**: Automatically assigns a default value to a column if no value is provided during the insertion of a new record.
+   - **Read**: Ensures that even if no value was explicitly inserted, a default value exists.
+   - **Update**: No direct impact unless updating to remove the current value, which would not trigger a default value to be applied.
+   - **Delete**: No direct impact.
+
+### 7. **AUTO_INCREMENT (or SERIAL) Constraint**
+   - **Create**: Automatically generates a unique value for the primary key during the insertion of a new record.
+   - **Read**: Provides a unique identifier that can be used to access specific records.
+   - **Update**: Generally, auto-incremented columns are not updated because they serve as unique identifiers.
+   - **Delete**: No direct impact, but deleting a record does not reset the auto-increment value.
+
+### 8. **INDEX Constraint**
+   - **Create**: Does not directly affect the insertion of records but improves the performance of data retrieval by providing fast access to rows based on the indexed columns.
+   - **Read**: Speeds up read operations, especially for large datasets.
+   - **Update**: Updates to indexed columns might be slower because the index needs to be updated as well.
+   - **Delete**: No direct impact, but deleting records may require index adjustments.
+
+### 9. **TRIGGER** (Technically not a constraint but often used to enforce constraints)
+   - **Create**: Can enforce complex rules before or after data is inserted into the table.
+   - **Read**: No direct impact, but triggers can modify data before it is stored, affecting what is read later.
+   - **Update**: Can enforce complex rules before or after data is updated.
+   - **Delete**: Can enforce complex rules before or after data is deleted.
+
+### **Summary of CRUD Impact:**
+- **Create**: Constraints primarily ensure data validity and uniqueness when new records are inserted.
+- **Read**: Constraints ensure the integrity of the data being read, often speeding up access to records through indexes.
+- **Update**: Constraints enforce rules that prevent invalid data updates and maintain referential integrity.
+- **Delete**: Constraints, especially foreign keys, can prevent the deletion of records that are referenced elsewhere, maintaining the integrity of related data.
+
+These constraints collectively ensure that the data within a database remains consistent, accurate, and reliable throughout all CRUD operations.
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+## List of all the CLAUSE
+
+In SQL, clauses are used to construct queries and manipulate data in a database. Here’s a list of the primary SQL clauses and their purposes:
+
+### 1. **SELECT**
+   - **Purpose**: Specifies the columns to retrieve from a table.
+   - **Example**: 
+     ```sql
+     SELECT firstName, lastName FROM students;
+     ```
+
+### 2. **FROM**
+   - **Purpose**: Specifies the table(s) from which to retrieve the data.
+   - **Example**: 
+     ```sql
+     SELECT * FROM students;
+     ```
+
+### 3. **WHERE**
+   - **Purpose**: Filters the rows returned by the query based on a condition.
+   - **Example**: 
+     ```sql
+     SELECT * FROM students WHERE isActive = TRUE;
+     ```
+
+### 4. **GROUP BY**
+   - **Purpose**: Groups rows that have the same values in specified columns into summary rows.
+   - **Example**: 
+     ```sql
+     SELECT batchId, COUNT(*) FROM students GROUP BY batchId;
+     ```
+
+### 5. **HAVING**
+   - **Purpose**: Filters groups created by the `GROUP BY` clause based on a condition.
+   - **Example**: 
+     ```sql
+     SELECT batchId, COUNT(*) FROM students GROUP BY batchId HAVING COUNT(*) > 10;
+     ```
+
+### 6. **ORDER BY**
+   - **Purpose**: Sorts the result set by one or more columns.
+   - **Example**: 
+     ```sql
+     SELECT * FROM students ORDER BY lastName ASC;
+     ```
+
+### 7. **LIMIT**
+   - **Purpose**: Restricts the number of rows returned by the query.
+   - **Example**: 
+     ```sql
+     SELECT * FROM students LIMIT 5;
+     ```
+
+### 8. **OFFSET**
+   - **Purpose**: Skips a specified number of rows before beginning to return rows from the query.
+   - **Example**: 
+     ```sql
+     SELECT * FROM students LIMIT 5 OFFSET 10;
+     ```
+
+### 9. **JOIN** (INNER JOIN)
+   - **Purpose**: Combines rows from two or more tables based on a related column between them.
+   - **Example**: 
+     ```sql
+     SELECT students.firstName, batches.batchName
+     FROM students
+     INNER JOIN batches ON students.batchId = batches.id;
+     ```
+
+### 10. **LEFT JOIN** (LEFT OUTER JOIN)
+   - **Purpose**: Returns all rows from the left table and the matched rows from the right table. If there is no match, NULLs are returned for columns from the right table.
+   - **Example**: 
+     ```sql
+     SELECT students.firstName, batches.batchName
+     FROM students
+     LEFT JOIN batches ON students.batchId = batches.id;
+     ```
+
+### 11. **RIGHT JOIN** (RIGHT OUTER JOIN)
+   - **Purpose**: Returns all rows from the right table and the matched rows from the left table. If there is no match, NULLs are returned for columns from the left table.
+   - **Example**: 
+     ```sql
+     SELECT students.firstName, batches.batchName
+     FROM students
+     RIGHT JOIN batches ON students.batchId = batches.id;
+     ```
+
+### 12. **FULL JOIN** (FULL OUTER JOIN)
+   - **Purpose**: Returns all rows when there is a match in either the left or right table. Rows without a match in the left or right tables are returned with NULLs.
+   - **Example**: 
+     ```sql
+     SELECT students.firstName, batches.batchName
+     FROM students
+     FULL JOIN batches ON students.batchId = batches.id;
+     ```
+
+### 13. **CROSS JOIN**
+   - **Purpose**: Returns the Cartesian product of the two tables, i.e., all possible combinations of rows.
+   - **Example**: 
+     ```sql
+     SELECT * FROM students CROSS JOIN batches;
+     ```
+
+### 14. **UNION**
+   - **Purpose**: Combines the results of two or more `SELECT` queries into a single result set, removing duplicates.
+   - **Example**: 
+     ```sql
+     SELECT firstName FROM students
+     UNION
+     SELECT firstName FROM mentors;
+     ```
+
+### 15. **UNION ALL**
+   - **Purpose**: Combines the results of two or more `SELECT` queries into a single result set, including duplicates.
+   - **Example**: 
+     ```sql
+     SELECT firstName FROM students
+     UNION ALL
+     SELECT firstName FROM mentors;
+     ```
+
+### 16. **EXCEPT**
+   - **Purpose**: Returns rows from the first `SELECT` statement that are not present in the second `SELECT` statement.
+   - **Example**: 
+     ```sql
+     SELECT firstName FROM students
+     EXCEPT
+     SELECT firstName FROM mentors;
+     ```
+
+### 17. **INTERSECT**
+   - **Purpose**: Returns only the rows that are present in both `SELECT` statements.
+   - **Example**: 
+     ```sql
+     SELECT firstName FROM students
+     INTERSECT
+     SELECT firstName FROM mentors;
+     ```
+
+### 18. **INSERT INTO**
+   - **Purpose**: Inserts new rows into a table.
+   - **Example**: 
+     ```sql
+     INSERT INTO students (firstName, lastName, email) VALUES ('John', 'Doe', 'john.doe@example.com');
+     ```
+
+### 19. **UPDATE**
+   - **Purpose**: Modifies existing rows in a table.
+   - **Example**: 
+     ```sql
+     UPDATE students SET isActive = FALSE WHERE id = 1;
+     ```
+
+### 20. **DELETE**
+   - **Purpose**: Removes rows from a table.
+   - **Example**: 
+     ```sql
+     DELETE FROM students WHERE id = 1;
+     ```
+
+### 21. **TRUNCATE**
+   - **Purpose**: Removes all rows from a table, without logging the individual row deletions.
+   - **Example**: 
+     ```sql
+     TRUNCATE TABLE students;
+     ```
+
+### 22. **ALTER**
+   - **Purpose**: Modifies an existing database object, such as a table, by adding, deleting, or modifying columns.
+   - **Example**: 
+     ```sql
+     ALTER TABLE students ADD COLUMN middleName VARCHAR(50);
+     ```
+
+### 23. **DROP**
+   - **Purpose**: Deletes an entire database object, such as a table, index, or view.
+   - **Example**: 
+     ```sql
+     DROP TABLE students;
+     ```
+
+### 24. **CREATE**
+   - **Purpose**: Creates a new database object, such as a table, index, or view.
+   - **Example**: 
+     ```sql
+     CREATE TABLE students (
+         id INT PRIMARY KEY,
+         firstName VARCHAR(50),
+         lastName VARCHAR(50)
+     );
+     ```
+
+### 25. **DISTINCT**
+   - **Purpose**: Ensures that the results returned by a `SELECT` query are unique, removing duplicates.
+   - **Example**: 
+     ```sql
+     SELECT DISTINCT firstName FROM students;
+     ```
+
+### 26. **WITH (Common Table Expressions - CTE)**
+   - **Purpose**: Creates a temporary result set that can be referenced within a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement.
+   - **Example**: 
+     ```sql
+     WITH recent_enrollments AS (
+         SELECT * FROM students WHERE enrollmentDate > '2024-01-01'
+     )
+     SELECT * FROM recent_enrollments;
+     ```
+
+These clauses can be combined in various ways to perform complex queries and operations in SQL. Understanding each clause and its purpose is essential for effectively managing and querying a database.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Use of AS keyword
+
+The `AS` keyword in SQL is used to create an alias, which is a temporary name assigned to a table or column. Aliases are primarily used to make query results more readable and to simplify complex queries by giving meaningful names to columns or tables. Here's how `AS` is typically used:
+
+### 1. **Column Alias**
+   - **Purpose**: To rename a column in the result set.
+   - **Example**:
+     ```sql
+     SELECT firstName AS "First Name", lastName AS "Last Name"
+     FROM students;
+     ```
+     - In this example, the `firstName` column is renamed to "First Name" and the `lastName` column is renamed to "Last Name" in the output.
+
+### 2. **Table Alias**
+   - **Purpose**: To assign a temporary name to a table, which can simplify queries, especially when dealing with multiple tables or self-joins.
+   - **Example**:
+     ```sql
+     SELECT s.firstName, s.lastName, b.batchName
+     FROM students AS s
+     INNER JOIN batches AS b ON s.batchId = b.id;
+     ```
+     - In this example, `students` is aliased as `s` and `batches` is aliased as `b`. This allows for shorter and clearer references to these tables in the query.
+
+### 3. **Alias Without AS (Optional)**
+   - **Note**: In some SQL dialects, the `AS` keyword is optional when creating an alias. You can simply use the alias name directly after the column or table name.
+   - **Example**:
+     ```sql
+     SELECT firstName "First Name", lastName "Last Name"
+     FROM students s;
+     ```
+     - Here, the column aliases are provided without the `AS` keyword, and the table `students` is aliased as `s` without using `AS`.
+
+### **Why Use `AS`?**
+- **Readability**: It makes the result set easier to understand by giving meaningful names to columns.
+- **Simplicity**: It simplifies queries, especially when dealing with long column names or complex expressions.
+- **Disambiguation**: It helps in distinguishing between columns with the same name in different tables, particularly in joins.
+
+### **Common Use Cases**:
+- **Renaming Columns**: To give more user-friendly names in the result set.
+- **Table Aliases in Joins**: To simplify and clarify the SQL code, especially when dealing with multiple tables.
+- **Derived Columns**: To name columns created from expressions or calculations.
+  - Example:
+    ```sql
+    SELECT CONCAT(firstName, ' ', lastName) AS fullName
+    FROM students;
+    ```
+    - Here, the concatenated full name is given the alias `fullName`.
+
+In summary, `AS` is a versatile keyword in SQL that enhances the readability and manageability of your queries by allowing you to assign aliases to columns and tables.
